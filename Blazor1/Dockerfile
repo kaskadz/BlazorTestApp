@@ -1,0 +1,20 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+COPY ["Blazor1/Blazor1.csproj", "Blazor1/"]
+RUN dotnet restore "Blazor1/Blazor1.csproj"
+COPY . .
+WORKDIR "/src/Blazor1"
+RUN dotnet build "Blazor1.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Blazor1.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Blazor1.dll"]
