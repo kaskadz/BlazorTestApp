@@ -1,15 +1,19 @@
 ﻿@page "/user-info"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Security.Claims
+@using System.Text.Json
 @inject IAccessTokenProvider _accessTokenProvider
 
 <AuthorizeView>
     <h1>User info</h1>
     
     <p>Login: @context.User.Identity.Name</p>
-    <p>Identities: @(GetIdentitiesString(context.User.Identities))</p>
-    <p>Claims: @(GetClaimsString(context.User.Claims))</p>
     <p>Token: @Token</p>
+    <p>ClaimsPrincipal:
+    <code>
+        @(GetClaimsPrincipalString(context.User))
+    </code>
+    </p>
 </AuthorizeView>
 
 @code {
@@ -26,13 +30,8 @@
         }
     }
 
-    private static string GetIdentitiesString(IEnumerable<ClaimsIdentity> claimsIdentities)
+    private static string GetClaimsPrincipalString(ClaimsPrincipal claimsPrincipal)
     {
-        return string.Join("; ", claimsIdentities.Select(x => x.Name));
-    }
-    
-    private static string GetClaimsString(IEnumerable<Claim> claims)
-    {
-        return string.Join("; ", claims.Select(x => $"{x.Type}:{x.Value}"));
+        return JsonSerializer.Serialize(claimsPrincipal);
     }
 }
