@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace BlazorTestApp.Backend.Configuration.CosmosDbClient
 {
-    public static class CosmosDbClientExtensions
+    public static class CosmosDbClientConfiguration
     {
         public static IServiceCollection AddCosmosDbClient(this IServiceCollection services)
         {

@@ -9,7 +9,7 @@ using Microsoft.Graph;
 
 namespace BlazorTestApp.Backend.Configuration.GraphClient
 {
-    internal static class GraphClientExtensions
+    internal static class GraphClientConfiguration
     {
         private const string GraphApiDefaultScope = "https://graph.microsoft.com/.default";
 

@@ -6,7 +6,7 @@ using Microsoft.Identity.Web;
 
 namespace BlazorTestApp.Backend.Configuration.Authentication
 {
-    public static class AuthenticationExtensions
+    public static class AuthenticationConfiguration
     {
         public static IServiceCollection AddAadAuthentication(this IServiceCollection services,
             IConfiguration configuration)
