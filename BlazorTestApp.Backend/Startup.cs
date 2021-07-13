@@ -71,6 +71,7 @@ namespace BlazorTestApp.Backend
             {
                 endpoints.MapSwagger("/swagger/v1/swagger.json");
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health/alive");
             });
         }
     }
