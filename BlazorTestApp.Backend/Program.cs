@@ -4,6 +4,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +22,7 @@ namespace BlazorTestApp.Backend
                 .ConfigureLogging(builder =>
                 {
                     builder.AddAzureWebAppDiagnostics();
+                    builder.AddApplicationInsights();
                 })
                 .ConfigureAppConfiguration((context, config) =>
                 {
@@ -31,6 +33,7 @@ namespace BlazorTestApp.Backend
                             new Uri($"https://{builtConfig["KeyVaultName"]}.vault.azure.net/"),
                             new DefaultAzureCredential());
                         config.AddAzureKeyVault(secretClient, new KeyVaultSecretManager());
+                        config.AddApplicationInsightsSettings();
                     }
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
