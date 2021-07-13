@@ -30,6 +30,11 @@ namespace BlazorTestApp.Backend
                 .AddCosmosDbClient()
                 .AddAadAuthentication(Configuration);
 
+            if (Environment.IsProduction())
+            {
+                services.AddApplicationInsightsTelemetry();
+            }
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
