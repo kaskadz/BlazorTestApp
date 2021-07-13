@@ -58,7 +58,7 @@ namespace BlazorTestApp.Backend
                         "http://localhost:3000", "https://localhost:3001",
                         "https://kazkadzapp.azurewebsites.net:443")
                     .AllowAnyMethod()
-                    .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization)
+                    .AllowAnyHeader()
                     .AllowCredentials());
 
             app.UseHttpsRedirection();
