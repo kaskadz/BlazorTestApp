@@ -1,15 +1,12 @@
-using System;
 using BlazorTestApp.Frontend.Clients;
 using BlazorTestApp.Frontend.Options;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorTestApp.Frontend.Configuration
 {
-    public static class WebApiClientWebAssemblyHostBuilderExtensions
+    public static class WebApiClientConfiguration
     {
         public static WebAssemblyHostBuilder AddWebApiClient(this WebAssemblyHostBuilder builder)
         {

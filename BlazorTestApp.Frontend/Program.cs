@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using BlazorTestApp.Frontend.Configuration;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorTestApp.Frontend
 {
@@ -14,13 +12,10 @@ namespace BlazorTestApp.Frontend
             builder.RootComponents.Add<App>("#app");
 
             builder
+                .AddAuthentication()
+                .AddAuthorization()
                 .AddStaticContentClient()
                 .AddWebApiClient();
-
-            builder.Services.AddMsalAuthentication(options =>
-            {
-                builder.Configuration.Bind("AzureAd", options.ProviderOptions);
-            });
 
             await builder.Build().RunAsync();
         }

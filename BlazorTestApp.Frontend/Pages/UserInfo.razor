@@ -1,19 +1,19 @@
 ﻿@page "/user-info"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Security.Claims
+@using System.Text
 @using System.Text.Json
 @inject IAccessTokenProvider _accessTokenProvider
 
 <AuthorizeView>
     <h1>User info</h1>
-    
+
     <p>Login: @context.User.Identity.Name</p>
+    <p>Administrator: @(context.User.IsInRole("7a188f9b-cbcc-4997-82cb-4923601282de"))</p>
+    <p>Administrator: @(context.User.IsInRole("administration"))</p>
     <p>Token: @Token</p>
-    <p>ClaimsPrincipal:
-    <code>
-        @(GetClaimsPrincipalString(context.User))
-    </code>
-    </p>
+    <p>ClaimsPrincipal:</p>
+    <pre><code>@(GetClaimsPrincipalString(context.User))</code></pre>
 </AuthorizeView>
 
 @code {
@@ -32,6 +32,36 @@
 
     private static string GetClaimsPrincipalString(ClaimsPrincipal claimsPrincipal)
     {
-        return JsonSerializer.Serialize(claimsPrincipal);
+        var sb = new StringBuilder();
+        sb.AppendLine($"Identity: {SerializeObject(claimsPrincipal.Identity)}");
+        sb.AppendLine("Identities:");
+        foreach (ClaimsIdentity claimsIdentity in claimsPrincipal.Identities)
+        {
+            sb.AppendLine($"    Name: {claimsIdentity.Name}");
+            sb.AppendLine($"    Label: {claimsIdentity.Label}");
+            sb.AppendLine($"    AuthenticationType: {claimsIdentity.AuthenticationType}");
+            sb.AppendLine($"    BootstrapContext: {claimsIdentity.BootstrapContext}");
+            sb.AppendLine($"    IsAuthenticated: {claimsIdentity.IsAuthenticated}");
+            sb.AppendLine($"    NameClaimType {claimsIdentity.NameClaimType}");
+            sb.AppendLine($"    RoleClaimType {claimsIdentity.RoleClaimType}");
+            sb.AppendLine($"    Actor: {claimsIdentity.Actor?.Name}");
+        }
+        sb.AppendLine("Claims:");
+        foreach (Claim claim in claimsPrincipal.Claims)
+        {
+            sb.AppendLine($"    {SerializeObject(claim.Clone())}");
+        }
+
+        return sb.ToString();
     }
+
+    private static string SerializeObject<T>(T o)
+    {
+        return JsonSerializer.Serialize(o, new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            IgnoreNullValues = false
+        });
+    }
+
 }

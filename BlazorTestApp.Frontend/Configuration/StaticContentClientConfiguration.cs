@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorTestApp.Frontend.Configuration
 {
-    public static class StaticContentClientWebAssemblyHostBuilderExtensions
+    public static class StaticContentClientConfiguration
     {
         public static WebAssemblyHostBuilder AddStaticContentClient(this WebAssemblyHostBuilder builder)
         {
