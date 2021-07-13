@@ -34,7 +34,8 @@ namespace BlazorTestApp.Backend
             {
                 services.AddApplicationInsightsTelemetry();
             }
-            
+
+            services.AddHealthChecks();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
