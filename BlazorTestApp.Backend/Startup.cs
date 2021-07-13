@@ -56,7 +56,7 @@ namespace BlazorTestApp.Backend
             app.UseCors(policy =>
                 policy.WithOrigins(
                         "http://localhost:3000", "https://localhost:3001",
-                        "https://kazkadzapp.azurewebsites.net:443")
+                        "https://kazkadzapp.azurewebsites.net")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
