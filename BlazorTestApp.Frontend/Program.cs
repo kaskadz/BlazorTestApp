@@ -1,5 +1,8 @@
 using System.Threading.Tasks;
 using BlazorTestApp.Frontend.Configuration;
+using BlazorTestApp.Frontend.Configuration.Authentication;
+using BlazorTestApp.Frontend.Configuration.Authorization;
+using BlazorTestApp.Frontend.Configuration.Clients;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace BlazorTestApp.Frontend

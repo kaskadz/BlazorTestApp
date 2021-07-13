@@ -3,7 +3,7 @@ using BlazorTestApp.Frontend.Clients;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorTestApp.Frontend.Configuration
+namespace BlazorTestApp.Frontend.Configuration.Clients
 {
     public static class StaticContentClientConfiguration
     {

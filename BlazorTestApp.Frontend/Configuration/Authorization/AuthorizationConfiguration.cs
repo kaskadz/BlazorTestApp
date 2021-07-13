@@ -1,8 +1,9 @@
+using BlazorTestApp.Frontend.Configuration.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorTestApp.Frontend.Configuration
+namespace BlazorTestApp.Frontend.Configuration.Authorization
 {
     public static class AuthorizationConfiguration
     {
