@@ -1,5 +1,4 @@
 using BlazorTestApp.Frontend.Clients;
-using BlazorTestApp.Frontend.Options;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

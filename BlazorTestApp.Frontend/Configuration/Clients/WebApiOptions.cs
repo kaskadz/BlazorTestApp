@@ -1,6 +1,6 @@
 using System;
 
-namespace BlazorTestApp.Frontend.Options
+namespace BlazorTestApp.Frontend.Configuration.Clients
 {
     public class WebApiOptions
     {
