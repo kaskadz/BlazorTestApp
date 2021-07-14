@@ -3,6 +3,7 @@ using BlazorTestApp.Frontend.Configuration;
 using BlazorTestApp.Frontend.Configuration.Authentication;
 using BlazorTestApp.Frontend.Configuration.Authorization;
 using BlazorTestApp.Frontend.Configuration.Clients;
+using BlazorTestApp.Frontend.Configuration.GraphClient;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace BlazorTestApp.Frontend
@@ -18,7 +19,8 @@ namespace BlazorTestApp.Frontend
                 .AddAuthentication()
                 .AddAuthorization()
                 .AddStaticContentClient()
-                .AddWebApiClient();
+                .AddWebApiClient()
+                .AddGraphClient();
 
             await builder.Build().RunAsync();
         }

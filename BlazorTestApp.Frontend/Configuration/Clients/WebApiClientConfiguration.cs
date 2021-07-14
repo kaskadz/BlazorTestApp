@@ -2,6 +2,7 @@ using BlazorTestApp.Frontend.Clients;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace BlazorTestApp.Frontend.Configuration.Clients
 {
@@ -9,16 +10,15 @@ namespace BlazorTestApp.Frontend.Configuration.Clients
     {
         public static WebAssemblyHostBuilder AddWebApiClient(this WebAssemblyHostBuilder builder)
         {
-            var webApiOptions = builder.Configuration
-                .GetSection(WebApiOptions.Section)
-                .Get<WebApiOptions>();
+            builder.Services.AddOptions<WebApiOptions>().BindConfiguration(WebApiOptions.Section);
 
-            builder.Services.AddSingleton(webApiOptions);
             builder.Services.AddTransient<WebApiAuthorizationMessageHandler>();
 
-            builder.Services.AddHttpClient<IWebApiClient, WebApiClient>(client =>
+            builder.Services.AddHttpClient<IWebApiClient, WebApiClient>((sp, client) =>
             {
-                client.BaseAddress = webApiOptions.Url;
+                var webApiOptions = sp.GetRequiredService<IOptions<WebApiOptions>>();
+                WebApiOptions webApiOptionsValue = webApiOptions.Value;
+                client.BaseAddress = webApiOptionsValue.Url;
             }).AddHttpMessageHandler<WebApiAuthorizationMessageHandler>();
 
             return builder;

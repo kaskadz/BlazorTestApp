@@ -5,26 +5,24 @@ using BlazorTestApp.Frontend.Configuration.Clients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace BlazorTestApp.Frontend.Clients
 {
     public class WebApiAuthorizationMessageHandler : AuthorizationMessageHandler
     {
         private readonly AuthenticationStateProvider _authenticationStateProvider;
-        private readonly ILogger<WebApiAuthorizationMessageHandler> _logger;
 
         public WebApiAuthorizationMessageHandler(
             IAccessTokenProvider provider,
             NavigationManager navigation,
-            WebApiOptions webApiOptions,
-            AuthenticationStateProvider authenticationStateProvider,
-            ILogger<WebApiAuthorizationMessageHandler> logger) : base(provider, navigation)
+            IOptions<WebApiOptions> webApiOptions,
+            AuthenticationStateProvider authenticationStateProvider) : base(provider, navigation)
         {
             _authenticationStateProvider = authenticationStateProvider;
-            _logger = logger;
+            WebApiOptions webApiOptionsValue = webApiOptions.Value;
             ConfigureHandler(
-                authorizedUrls: new[] {webApiOptions.Url.ToString()}
+                authorizedUrls: new[] { webApiOptionsValue.Url.ToString() }
             );
         }
 
@@ -32,7 +30,7 @@ namespace BlazorTestApp.Frontend.Clients
             CancellationToken cancellationToken)
         {
             AuthenticationState authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            if (authenticationState.User.Identity is {IsAuthenticated: false})
+            if (authenticationState.User.Identity is { IsAuthenticated: false })
             {
                 throw new UserNotAuthenticatedWebApiClientException();
             }
