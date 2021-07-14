@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
@@ -19,8 +18,11 @@ namespace BlazorTestApp.Frontend.Configuration.GraphClient
         public static WebAssemblyHostBuilder AddGraphClient(this WebAssemblyHostBuilder builder)
         {
             builder.Services.AddOptions<GraphClientOptions>().BindConfiguration(GraphClientOptions.Section);
-            builder.Services.AddScoped(sp => new GraphServiceClient(new DelegateAuthenticationProvider(
-                async request =>
+
+            builder.Services.AddScoped<IHttpProvider, HttpClientHttpProvider>(sp =>
+                new HttpClientHttpProvider(new HttpClient()));
+            builder.Services.AddScoped<IGraphServiceClient>(sp => new GraphServiceClient(
+                new DelegateAuthenticationProvider(async request =>
                 {
                     var accessTokenProvider = sp.GetRequiredService<IAccessTokenProvider>();
                     var graphClientOptions = sp.GetRequiredService<IOptions<GraphClientOptions>>();
@@ -36,7 +38,7 @@ namespace BlazorTestApp.Frontend.Configuration.GraphClient
                         request.Headers.Authorization = new AuthenticationHeaderValue(
                             BearerTokenScheme, token.Value);
                     }
-                })));
+                }), sp.GetRequiredService<IHttpProvider>()));
 
             return builder;
         }

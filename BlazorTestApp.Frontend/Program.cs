@@ -1,9 +1,11 @@
+using System.Text.Json;
 using System.Threading.Tasks;
-using BlazorTestApp.Frontend.Configuration;
+using Blazored.SessionStorage;
 using BlazorTestApp.Frontend.Configuration.Authentication;
 using BlazorTestApp.Frontend.Configuration.Authorization;
 using BlazorTestApp.Frontend.Configuration.Clients;
 using BlazorTestApp.Frontend.Configuration.GraphClient;
+using BlazorTestApp.Frontend.Configuration.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace BlazorTestApp.Frontend
@@ -20,7 +22,10 @@ namespace BlazorTestApp.Frontend
                 .AddAuthorization()
                 .AddStaticContentClient()
                 .AddWebApiClient()
-                .AddGraphClient();
+                .AddGraphClient()
+                .AddServices();
+
+            builder.Services.AddBlazoredSessionStorage();
 
             await builder.Build().RunAsync();
         }

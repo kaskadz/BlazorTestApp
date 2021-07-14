@@ -1,67 +1,66 @@
 ﻿@page "/user-info"
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Security.Claims
-@using System.Text
-@using System.Text.Json
-@inject IAccessTokenProvider _accessTokenProvider
+@using BlazorTestApp.Frontend.Domain
+@using BlazorTestApp.Frontend.Services
+@inject IUserInfoService _userInfoService
 
 <AuthorizeView>
     <h1>User info</h1>
 
-    <p>Login: @context.User.Identity.Name</p>
-    <p>Administrator: @(context.User.IsInRole("7a188f9b-cbcc-4997-82cb-4923601282de"))</p>
-    <p>Administrator: @(context.User.IsInRole("administration"))</p>
-    <p>Token: @Token</p>
-    <p>ClaimsPrincipal:</p>
-    <pre><code>@(GetClaimsPrincipalString(context.User))</code></pre>
+    @if (UserInfoDisplayData == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-3">Login</dt>
+            <dd class="col-sm-9">@UserInfoDisplayData.Login</dd>
+
+            <dt class="col-sm-3">Id</dt>
+            <dd class="col-sm-9">@UserInfoDisplayData.Identifier</dd>
+
+            <dt class="col-sm-3">First name</dt>
+            <dd class="col-sm-9">@UserInfoDisplayData.FirstName</dd>
+
+            <dt class="col-sm-3">Last name</dt>
+            <dd class="col-sm-9">@UserInfoDisplayData.LastName</dd>
+
+            <dt class="col-sm-3">Roles</dt>
+            <dd class="col-sm-9">
+                @foreach (string role in UserInfoDisplayData.Roles)
+                {
+                    <p>@role</p>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Groups</dt>
+            <dd class="col-sm-9">
+                @foreach (string group in UserInfoDisplayData.Groups)
+                {
+                    <p>@group</p>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Tokens</dt>
+            <dd class="col-sm-9">
+                @foreach (TokenDisplayData token in UserInfoDisplayData.Tokens)
+                {
+                    <TokenDisplay TokenDisplayData="token"/>
+                }
+            </dd>
+        </dl>
+    }
+
 </AuthorizeView>
 
 @code {
-    public string Token { get; set; }
+    private UserInfoDisplayData UserInfoDisplayData { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        AccessTokenResult accessTokenResult = await _accessTokenProvider.RequestAccessToken();
-        if (accessTokenResult != null)
-        {
-            Token = accessTokenResult.TryGetToken(out AccessToken token)
-                ? token?.Value
-                : "no token";
-        }
+        UserInfoDisplayData = await _userInfoService.GetUserInfoDisplayData();
     }
-
-    private static string GetClaimsPrincipalString(ClaimsPrincipal claimsPrincipal)
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine($"Identity: {SerializeObject(claimsPrincipal.Identity)}");
-        sb.AppendLine("Identities:");
-        foreach (ClaimsIdentity claimsIdentity in claimsPrincipal.Identities)
-        {
-            sb.AppendLine($"    Name: {claimsIdentity.Name}");
-            sb.AppendLine($"    Label: {claimsIdentity.Label}");
-            sb.AppendLine($"    AuthenticationType: {claimsIdentity.AuthenticationType}");
-            sb.AppendLine($"    BootstrapContext: {claimsIdentity.BootstrapContext}");
-            sb.AppendLine($"    IsAuthenticated: {claimsIdentity.IsAuthenticated}");
-            sb.AppendLine($"    NameClaimType {claimsIdentity.NameClaimType}");
-            sb.AppendLine($"    RoleClaimType {claimsIdentity.RoleClaimType}");
-            sb.AppendLine($"    Actor: {claimsIdentity.Actor?.Name}");
-        }
-        sb.AppendLine("Claims:");
-        foreach (Claim claim in claimsPrincipal.Claims)
-        {
-            sb.AppendLine($"    {SerializeObject(claim.Clone())}");
-        }
-
-        return sb.ToString();
-    }
-
-    private static string SerializeObject<T>(T o)
-    {
-        return JsonSerializer.Serialize(o, new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            IgnoreNullValues = false
-        });
-    }
-
+    
 }

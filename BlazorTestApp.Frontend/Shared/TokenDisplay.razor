@@ -1,0 +1,19 @@
+@using BlazorTestApp.Frontend.Domain
+
+<dl class="row">
+    <dt class="col-sm-4 text-break ">@TokenName</dt>
+    <dd class="col-sm-8 text-break text-monospace text-light bg-dark">@TokenDisplayData.Token</dd>
+</dl>
+
+@code {
+
+    [Parameter]
+    public TokenDisplayData TokenDisplayData { get; set; }
+
+    private string TokenName => TokenDisplayData.Target switch
+    {
+        null => TokenDisplayData.TokenType,
+        _ => $"{TokenDisplayData.TokenType} ({TokenDisplayData.Target})"
+        };
+
+}
