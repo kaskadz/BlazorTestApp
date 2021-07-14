@@ -16,7 +16,7 @@ namespace BlazorTestApp.Backend.Configuration.GraphClient
         public static IServiceCollection AddAadGraphClient(this IServiceCollection services)
         {
             services.AddOptions<AzureAdOptions>().BindConfiguration(AzureAdOptions.Section);
-            services.AddScoped(sp =>
+            services.AddScoped<IGraphServiceClient>(sp =>
             {
                 var options = sp.GetRequiredService<IOptions<AzureAdOptions>>();
                 AzureAdOptions azureAdOptions = options.Value;
