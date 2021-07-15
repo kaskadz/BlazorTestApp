@@ -52,13 +52,13 @@ namespace BlazorTestApp.Backend
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlazorTestApp.Backend v1"));
             }
 
-            app.UseCors(policy =>
-                policy.WithOrigins(
-                        "http://localhost:3000", "https://localhost:3001",
-                        "https://kazkadzapp.azurewebsites.net")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+            // app.UseCors(policy =>
+            //     policy.WithOrigins(
+            //             "http://localhost:3000", "https://localhost:3001",
+            //             "https://kazkadzapp.azurewebsites.net")
+            //         .AllowAnyMethod()
+            //         .AllowAnyHeader()
+            //         .AllowCredentials());
 
             app.UseHttpsRedirection();
 
