@@ -1,13 +1,14 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace BlazorTestApp.Frontend.Configuration.Authentication
+namespace BlazorTestApp.Frontend.Configuration.Authnz
 {
     public class CustomUserAccount : RemoteUserAccount
     {
         [JsonPropertyName("groups")]
-        public string[] Groups { get; set; } = Array.Empty<string>();
+        public IEnumerable<string> Groups { get; set; } = Enumerable.Empty<string>();
 
         [JsonPropertyName("oid")]
         public string Oid { get; set; }

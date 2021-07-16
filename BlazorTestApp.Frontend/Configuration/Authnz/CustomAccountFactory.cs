@@ -3,12 +3,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
 
-namespace BlazorTestApp.Frontend.Configuration.Authentication
+namespace BlazorTestApp.Frontend.Configuration.Authnz
 {
     public class CustomAccountFactory : AccountClaimsPrincipalFactory<CustomUserAccount>
     {
-        public CustomAccountFactory(IAccessTokenProviderAccessor accessor) : base(accessor)
+        private readonly IGroupMappingProvider _groupMappingProvider;
+
+        public CustomAccountFactory(
+            IAccessTokenProviderAccessor accessor,
+            IGroupMappingProvider groupMappingProvider) : base(accessor)
         {
+            _groupMappingProvider = groupMappingProvider;
         }
 
         public override async ValueTask<ClaimsPrincipal> CreateUserAsync(
@@ -19,13 +24,16 @@ namespace BlazorTestApp.Frontend.Configuration.Authentication
 
             if (initialUser.Identity.IsAuthenticated)
             {
-                var userIdentity = (ClaimsIdentity) initialUser.Identity;
+                var userIdentity = (ClaimsIdentity)initialUser.Identity;
 
                 userIdentity.AddClaim(new Claim("userId", account.Oid));
-                
+
                 foreach (string groupId in account.Groups)
                 {
-                    userIdentity.AddClaim(new Claim("role", groupId));
+                    if (_groupMappingProvider.IdToName.TryGetValue(groupId, out string groupName))
+                    {
+                        userIdentity.AddClaim(new Claim("role", groupName));
+                    }
                 }
             }
 

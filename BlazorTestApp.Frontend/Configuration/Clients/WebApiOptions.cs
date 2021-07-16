@@ -7,5 +7,7 @@ namespace BlazorTestApp.Frontend.Configuration.Clients
         public const string Section = "WebApi";
 
         public Uri Url { get; set; }
+
+        public string Scope { get; set; }
     }
 }

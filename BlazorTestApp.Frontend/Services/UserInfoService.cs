@@ -27,7 +27,7 @@ namespace BlazorTestApp.Frontend.Services
         public async Task<UserInfoDisplayData> GetUserInfoDisplayData()
         {
             User user = await GetUserAsync();
-            IEnumerable<string> groups = await GetGroupsAsync();
+            IEnumerable<string> groups = await GetGroupNamesAsync();
             IEnumerable<TokenDisplayData> tokens = await _tokenExtractionService.GetTokensAsync();
             AuthenticationState authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
             ClaimsPrincipal principal = authenticationState.User;
@@ -35,36 +35,36 @@ namespace BlazorTestApp.Frontend.Services
             IEnumerable<string> roles = principal.Claims
                 .Where(x => x.Type == "role")
                 .Select(x => x.Value);
+            string userIdClaim = principal.Claims
+                .FirstOrDefault(x => x.Type == "userId")
+                ?.Value;
 
             return new UserInfoDisplayData
             {
                 Login = login,
-                Identifier = user.Id,
+                AzureAdObjectId = user.Id,
+                UserIdClaim = userIdClaim,
                 FirstName = user.GivenName,
                 LastName = user.Surname,
-                Roles = roles,
-                Groups = groups,
+                RoleClaims = roles,
+                AzureAdGroups = groups,
                 Tokens = tokens
             };
         }
 
-        private async Task<IEnumerable<string>> GetGroupsAsync()
+        private async Task<IEnumerable<string>> GetGroupNamesAsync()
         {
-            // _graphServiceClient.Me.MemberOf.Request()
-            //     .Select(x => new
-            //         {
-            //             (x as Group).DisplayName
-            //         }
-            //     ).GetAsync();
             var groups = new List<string>();
-            var pageRequest = _graphServiceClient.Me
-                .GetMemberGroups(securityEnabledOnly: true).Request();
+            var pageRequest = _graphServiceClient.Me.MemberOf.Request()
+                .Select("displayName");
             do
             {
-                var page = await pageRequest.PostAsync();
+                var page = await pageRequest.GetAsync();
                 if (page != null)
                 {
-                    groups.AddRange(page.CurrentPage);
+                    groups.AddRange(page.CurrentPage
+                        .OfType<Group>()
+                        .Select(x => x.DisplayName));
                 }
 
                 pageRequest = page?.NextPageRequest;

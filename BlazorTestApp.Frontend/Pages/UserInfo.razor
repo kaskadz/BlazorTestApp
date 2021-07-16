@@ -18,8 +18,11 @@
             <dt class="col-sm-3">Login</dt>
             <dd class="col-sm-9">@UserInfoDisplayData.Login</dd>
 
-            <dt class="col-sm-3">Id</dt>
-            <dd class="col-sm-9">@UserInfoDisplayData.Identifier</dd>
+            <dt class="col-sm-3">AAD ObjectId</dt>
+            <dd class="col-sm-9">@UserInfoDisplayData.AzureAdObjectId</dd>
+
+            <dt class="col-sm-3">UserId</dt>
+            <dd class="col-sm-9">@UserInfoDisplayData.UserIdClaim</dd>
 
             <dt class="col-sm-3">First name</dt>
             <dd class="col-sm-9">@UserInfoDisplayData.FirstName</dd>
@@ -29,7 +32,7 @@
 
             <dt class="col-sm-3">Roles</dt>
             <dd class="col-sm-9">
-                @foreach (string role in UserInfoDisplayData.Roles)
+                @foreach (string role in UserInfoDisplayData.RoleClaims)
                 {
                     <p>@role</p>
                 }
@@ -37,7 +40,7 @@
 
             <dt class="col-sm-3">Groups</dt>
             <dd class="col-sm-9">
-                @foreach (string group in UserInfoDisplayData.Groups)
+                @foreach (string group in UserInfoDisplayData.AzureAdGroups)
                 {
                     <p>@group</p>
                 }
@@ -62,5 +65,5 @@
     {
         UserInfoDisplayData = await _userInfoService.GetUserInfoDisplayData();
     }
-    
+
 }

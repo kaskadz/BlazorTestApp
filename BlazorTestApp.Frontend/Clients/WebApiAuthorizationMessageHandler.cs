@@ -22,7 +22,8 @@ namespace BlazorTestApp.Frontend.Clients
             _authenticationStateProvider = authenticationStateProvider;
             WebApiOptions webApiOptionsValue = webApiOptions.Value;
             ConfigureHandler(
-                authorizedUrls: new[] { webApiOptionsValue.Url.ToString() }
+                authorizedUrls: new[] { webApiOptionsValue.Url.ToString() },
+                scopes: new[] { webApiOptionsValue.Scope }
             );
         }
 

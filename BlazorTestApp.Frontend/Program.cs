@@ -1,8 +1,6 @@
-using System.Text.Json;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
-using BlazorTestApp.Frontend.Configuration.Authentication;
-using BlazorTestApp.Frontend.Configuration.Authorization;
+using BlazorTestApp.Frontend.Configuration.Authnz;
 using BlazorTestApp.Frontend.Configuration.Clients;
 using BlazorTestApp.Frontend.Configuration.GraphClient;
 using BlazorTestApp.Frontend.Configuration.Services;
