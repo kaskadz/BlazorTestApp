@@ -1,7 +1,9 @@
+using BlazorTestApp.Frontend.Configuration.Authentication;
+using BlazorTestApp.Shared.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorTestApp.Frontend.Configuration.Authnz
+namespace BlazorTestApp.Frontend.Configuration.Authorization
 {
     public static class AuthorizationConfiguration
     {
@@ -9,7 +11,9 @@ namespace BlazorTestApp.Frontend.Configuration.Authnz
         {
             builder.Services.AddAuthorizationCore(options =>
             {
-                options.AddPolicy(Policies.Weather, policy => policy.RequireRole("Weather"));
+                options
+                    .AddNamedPolicy(Policies.Weather)
+                    .AddNamedPolicy(Policies.Admin);
             });
 
             return builder;

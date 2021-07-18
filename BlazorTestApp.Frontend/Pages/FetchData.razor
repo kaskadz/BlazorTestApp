@@ -1,7 +1,7 @@
 ﻿@page "/fetchdata"
 @using BlazorTestApp.Frontend.Clients
-@using BlazorTestApp.Frontend.Configuration.Authnz
 @using BlazorTestApp.Model
+@using BlazorTestApp.Shared.Authorization
 @inject IWebApiClient _webApiClient
 
 <AuthorizeView Policy="@Policies.Weather">

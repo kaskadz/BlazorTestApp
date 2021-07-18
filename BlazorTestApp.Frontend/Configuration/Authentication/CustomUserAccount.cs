@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace BlazorTestApp.Frontend.Configuration.Authnz
+namespace BlazorTestApp.Frontend.Configuration.Authentication
 {
     public class CustomUserAccount : RemoteUserAccount
     {
