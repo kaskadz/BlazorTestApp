@@ -26,18 +26,22 @@ namespace BlazorTestApp.Frontend.Services
 
         public async Task<UserInfoDisplayData> GetUserInfoDisplayData()
         {
-            User user = await GetUserAsync();
-            IEnumerable<string> groups = await GetGroupNamesAsync();
-            IEnumerable<TokenDisplayData> tokens = await _tokenExtractionService.GetTokensAsync();
-            AuthenticationState authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var getUserAsync = GetUserAsync();
+            var getGroupNamesAsync = GetGroupNamesAsync();
+            var getTokensAsync = _tokenExtractionService.GetTokensAsync();
+            var getAuthenticationStateAsync = _authenticationStateProvider.GetAuthenticationStateAsync();
+
+            await Task.WhenAll(getUserAsync, getGroupNamesAsync, getTokensAsync, getAuthenticationStateAsync);
+
+            User user = getUserAsync.Result;
+            IEnumerable<string> groups = getGroupNamesAsync.Result;
+            IEnumerable<TokenDisplayData> tokens = getTokensAsync.Result;
+            AuthenticationState authenticationState = getAuthenticationStateAsync.Result;
+
             ClaimsPrincipal principal = authenticationState.User;
-            string login = principal.Identity?.Name;
-            IEnumerable<string> roles = principal.Claims
-                .Where(x => x.Type == "role")
-                .Select(x => x.Value);
-            string userIdClaim = principal.Claims
-                .FirstOrDefault(x => x.Type == "userId")
-                ?.Value;
+            string login = GetLogin(principal);
+            IEnumerable<string> roles = GetRoles(principal);
+            string userIdClaim = GetUserIdClaim(principal);
 
             return new UserInfoDisplayData
             {
@@ -85,6 +89,25 @@ namespace BlazorTestApp.Frontend.Services
                     }
                 )
                 .GetAsync();
+        }
+
+        private static string GetLogin(ClaimsPrincipal principal)
+        {
+            return principal.Identity?.Name;
+        }
+
+        private static IEnumerable<string> GetRoles(ClaimsPrincipal principal)
+        {
+            return principal.Claims
+                .Where(x => x.Type == "role")
+                .Select(x => x.Value);
+        }
+
+        private static string GetUserIdClaim(ClaimsPrincipal principal)
+        {
+            return principal.Claims
+                .FirstOrDefault(x => x.Type == "userId")
+                ?.Value;
         }
     }
 }

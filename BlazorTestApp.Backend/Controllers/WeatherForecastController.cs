@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using BlazorTestApp.Model;
+using BlazorTestApp.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorTestApp.Backend.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = Policies.Weather.PolicyName)]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

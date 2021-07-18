@@ -12,8 +12,8 @@ namespace BlazorTestApp.Frontend.Configuration.Authorization
             builder.Services.AddAuthorizationCore(options =>
             {
                 options
-                    .AddNamedPolicy(Policies.Weather)
-                    .AddNamedPolicy(Policies.Admin);
+                    .AddNamedPolicy(Policies.Weather.NamedPolicy)
+                    .AddNamedPolicy(Policies.Admin.NamedPolicy);
             });
 
             return builder;

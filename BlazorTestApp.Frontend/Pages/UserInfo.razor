@@ -1,7 +1,9 @@
 ﻿@page "/user-info"
 @using BlazorTestApp.Frontend.Domain
 @using BlazorTestApp.Frontend.Services
+@using BlazorTestApp.Frontend.Clients
 @inject IUserInfoService _userInfoService
+@inject IWebApiClient _webApiClient
 
 <AuthorizeView>
     <h1>User info</h1>
