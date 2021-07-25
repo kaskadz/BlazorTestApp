@@ -13,7 +13,10 @@ namespace BlazorTestApp.Frontend.Configuration.Authorization
             {
                 options
                     .AddNamedPolicy(Policies.Weather.NamedPolicy)
-                    .AddNamedPolicy(Policies.Admin.NamedPolicy);
+                    .AddNamedPolicy(Policies.Admin.NamedPolicy)
+                    .AddNamedPolicy(Policies.Player.NamedPolicy)
+                    .AddNamedPolicy(Policies.Host.NamedPolicy)
+                    .AddNamedPolicy(Policies.Editor.NamedPolicy);
             });
 
             return builder;
