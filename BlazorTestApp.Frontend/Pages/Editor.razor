@@ -1,0 +1,12 @@
+@page "/Editor"
+@using BlazorTestApp.Shared.Authorization
+
+<AuthorizeView Policy="@Policies.Editor.PolicyName">
+
+<h3>Editor</h3>
+
+</AuthorizeView>
+
+@code {
+    
+}
